@@ -4,9 +4,6 @@ const router = express.Router();
 const {
   handleGetHome,
   handleGetAvailableRooms,
-
-
-  handleGetCreate,
   handleGetAbout,
   handleGetProfile,
   handleLogout,
@@ -16,7 +13,6 @@ const {
   handleUpdatePassword,
   handleUpdateProfile,
   handlePostCreateRoom,
-  handleGetCreatedRooms,
   handleGetRoomAccess,
   handlePostRoomAccess,
 } = require("../controllers/home");
@@ -25,7 +21,6 @@ router.get("/", handleGetHome);
 
 router.get("/available-rooms", handleGetAvailableRooms);
 router.post("/create-room",handlePostCreateRoom);
-router.get("/created-rooms",handleGetCreatedRooms);
 
 router.get("/profile/:username", handleGetProfile);
 router.post("/upload-image", upload.single("image"), handlePostUploadImage);

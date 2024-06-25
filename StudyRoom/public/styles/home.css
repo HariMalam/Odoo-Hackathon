@@ -11,18 +11,18 @@
 }
 
 /* add new */
-.addBox img{
+.addBtn img{
   width: 60px;
 }
 
-.addBox{
-  position: absolute;
+.addBtn{
+  position: fixed;
   bottom: 50px;
   right: 50px;
   border-radius: 50%;
 }
 
-.addBox:hover{
+.addBtn:hover{
   cursor: pointer;
 }
 
@@ -57,7 +57,8 @@
   background-color: white;
   border-radius: 20px;
   padding: 20px;
-  width: 800px;
+  width: 100vw;
+  margin: 100px;
   margin-top: 80px;
   align-items: center;
   justify-content: center;
@@ -115,3 +116,134 @@
   max-height: 100%;
   display: none;
 }
+
+.addBox{
+  display: none;
+}
+
+.addBox .headMenu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headMenu .joinBtn{
+  width: 50%;
+  padding: 20px;
+  text-align: center;
+  font-size: 20px;
+  border: 1px solid rgb(139, 139, 139);
+  border-radius: 10px 0px 0px 0px;
+}
+
+.headMenu .createBtn{
+  width: 50%;
+  font-size: 20px;
+  text-align: center;
+  padding: 20px;
+  border-radius: 0px 10px 0px 0px;
+  border: 1px solid rgb(139, 139, 139); 
+  border-left: none;
+}
+
+.active{
+  border-bottom: none !important;
+}
+
+.addBoxContent{
+  border: 1px solid rgb(139, 139, 139);
+  border-top: none;
+  height: 400px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.head{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.head h1{
+  margin-left: 20px;
+}
+
+.back:hover {
+  cursor: pointer;
+}
+
+.addBoxContent .active{
+  display: block;
+}
+
+.addBoxContent .unactive{
+  display: none;
+}
+
+.create{
+  overflow: auto;
+  height: 100%;
+}
+
+.create{
+  padding: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+input[type="text"], select {
+      width: calc(100% - 12px);
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+  }
+  
+  button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+  }
+  
+  button:hover {
+      background-color: #45A049;
+  }
+  
+  .custom-field {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+  }
+  
+  .custom-field label, .custom-field select {
+      display: inline-block;
+      vertical-align: top;
+  }
+  
+  .custom-field select {
+      margin-right: 10px;
+      font-size: 16px;
+  }
+  
+  .add-remove-buttons button {
+      padding: 5px 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 4px;
+      background-color: #ccc;
+      color: #333;
+      font-size: 14px;
+      cursor: pointer;
+  }
+  
+  .add-remove-buttons button:hover {
+      background-color: #bbb;
+  }

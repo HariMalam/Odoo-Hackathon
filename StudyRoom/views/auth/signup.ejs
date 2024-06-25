@@ -3,66 +3,111 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles/signup.css">
+    <link rel="stylesheet" href="/styles/signup.css" />
     <title>Form with OTP Verification</title>
   </head>
   <body>
-    <h1>Registration Form</h1>
-    <form id="registration-form">
-      <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required />
-        <span id="name-status" class="status"></span>
+    <div class="main">
+      <div class="registration-form-container">
+        <div class="registration-form-image-container">
+          <img
+            src="/icon/logo.png"
+            alt="logo"
+            srcset=""
+            height="50"
+            width="50"
+          />
+        </div>
+        <h2>Registration Form</h2>
       </div>
-      <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required />
-        <span id="username-status" class="status"></span>
-      </div>
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required />
-        <span id="email-status" class="status"></span>
-      </div>
-      <div>
-        <label for="mobile">Mobile Number:</label>
-        <input type="text" id="mobile" name="mobile" required />
-        <span id="mobile-status" class="status"></span>
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required />
-        <span id="password-status" class="status"></span>
-      </div>
-      <div>
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender" required>
-          <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-        <span id="gender-status" class="status"></span>
-      </div>
-      <div>
-        <button type="submit" id="submit-button">Submit</button>
-      </div>
-    </form>
-
-    <div id="otp-section" class="otp-section">
-      <h2>Verify OTP</h2>
-      <form id="otp-form">
+      <form id="registration-form">
         <div>
-        <span id="otp-status" class="status"></span>
-          <label for="otp">OTP (<span id="otpEmail"></span>):</label>
-          <input type="text" id="otp" name="otp" required />
+          <p class="sign-up-container">Sign Up</p>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Name"
+            required
+          />
+          <span id="name-status" class="status"></span>
         </div>
         <div>
-          <button type="submit" id="verify-otp-button">Verify OTP</button>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="User Name"
+            required
+          />
+          <span id="username-status" class="status"></span>
+        </div>
+        <div>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email"
+            required
+          />
+          <span id="email-status" class="status"></span>
+        </div>
+        <div>
+          <input
+            type="text"
+            id="mobile"
+            name="mobile"
+            placeholder="Mobile"
+            required
+          />
+          <span id="mobile-status" class="status"></span>
+        </div>
+        <div>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <span id="password-status" class="status"></span>
+        </div>
+        <div>
+          <select
+            id="gender"
+            style="color: rgba(0, 0, 0, 0.6)"
+            name="gender"
+            placeholder="Gender"
+            required
+          >
+            <option value="">Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+          <span id="gender-status" class="status"></span>
+        </div>
+        <div>
+          <button type="submit" id="submit-button">Submit</button>
+        </div>
+        <div class="log-in">
+          <a href="/auth/login">Log In?</a>
         </div>
       </form>
+      <div id="otp-section" class="otp-section">
+        <h2>Verify OTP</h2>
+        <form id="otp-form">
+          <div>
+            <span id="otp-status" class="status"></span>
+            <label for="otp">OTP (<span id="otpEmail"></span>):</label>
+            <input type="text" id="otp" name="otp" required />
+          </div>
+          <div>
+            <button type="submit" id="verify-otp-button">Verify OTP</button>
+          </div>
+        </form>
+      </div>
     </div>
-
     <script>
       const otpSection = document.querySelector("#otp-section");
       otpSection.style.display = "none";
@@ -81,7 +126,7 @@
       const emailStatus = document.getElementById("email-status");
       const mobileStatus = document.getElementById("mobile-status");
       const passwordStatus = document.getElementById("password-status");
-      const otpStatus = document.getElementById('otp-status');
+      const otpStatus = document.getElementById("otp-status");
 
       otpStatus.innerText = "";
 
@@ -204,8 +249,8 @@
         if (data.success) {
           otpStatus.innerText = "";
           window.location.href = data.redirectUrl;
-        }else{
-          otpStatus.innerText = "invalid otp"
+        } else {
+          otpStatus.innerText = "invalid otp";
         }
       });
     </script>

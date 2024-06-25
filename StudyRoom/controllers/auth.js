@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 
 const handleGetLogin = (req, res) => {
   if(req.session.uid){
-    res.redirect("/join");
+    res.redirect("/");
   }else{
   const invalid = req.session.invalid || false;
   const success = req.session.success || false;
@@ -15,7 +15,7 @@ const handleGetLogin = (req, res) => {
 }
 const handleGetSignup = (req, res) => {
   if(req.session.uid){
-    res.redirect("/join");
+    res.redirect("/");
   }else{
     res.render('auth/signup');
   }
@@ -41,7 +41,7 @@ const handlePostLogin = async (req, res) => {
 
       req.session.uid = user._id;
 
-      return res.redirect('/join');
+      return res.redirect('/');
   } catch (error) {
       console.error('Error during login:', error);
       return res.status(500).send('Internal Server Error');

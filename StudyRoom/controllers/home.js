@@ -52,12 +52,6 @@ const handleGetAvailableRooms = async (req,res) => {
     res.status(500).json({ error: "Server error" });
   }
 }
-
-
-const handleGetCreate = async (req, res) => {
-  const user = req.user;
-  res.render("home/create", { active: "create", user });
-};
 const handleGetAbout = async (req, res) => {
   const user = req.user;
   res.render("home/about", { active: "about", user });
@@ -162,46 +156,6 @@ const handlePostCreateRoom = async (req, res) => {
   res.json({ success });
 };
 
-const handleGetCreatedRooms = async (req, res) => {
-  const username = req.user.username;
-
-  try {
-    const rooms = await RoomUsers.aggregate([
-      {
-        $match: {
-          username: username,
-          type: "admin",
-        },
-      },
-      {
-        $lookup: {
-          from: "rooms",
-          localField: "roomId",
-          foreignField: "roomId",
-          as: "roomDetails",
-        },
-      },
-      {
-        $unwind: "$roomDetails",
-      },
-      {
-        $project: {
-          _id: "$roomDetails._id",
-          roomId: "$roomDetails.roomId",
-          name: "$roomDetails.name",
-          img: "$roomDetails.img",
-          organization: "$roomDetails.organization",
-          customFields: "$roomDetails.customFields",
-        },
-      },
-    ]);
-    res.status(200).json(rooms);
-  } catch (err) {
-    console.error("Error retrieving admin rooms:", err);
-    res.status(500).json({ error: "Server error" });
-  }
-};
-
 const handleGetRoomAccess = async (req, res) => {
   const roomId = req.params.roomId;
   const room = await Room.findOne({roomId});
@@ -223,8 +177,6 @@ const handlePostRoomAccess = async (req, res) => {
 module.exports = {
   handleGetHome,
   handleGetAvailableRooms,
-
-  handleGetCreate,
   handleGetAbout,
   handleGetProfile,
   handleLogout,
@@ -234,7 +186,6 @@ module.exports = {
   handleUpdatePassword,
   handleUpdateProfile,
   handlePostCreateRoom,
-  handleGetCreatedRooms,
   handleGetRoomAccess,
   handlePostRoomAccess,
 };

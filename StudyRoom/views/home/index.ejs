@@ -30,13 +30,13 @@
     <div class="alert" id="alert" role="alert"></div>
 
     <!-- add new -->
-    <div class="addBox" title="Add New Room">
+    <div class="addBtn" id="addBtn" title="Add New Room">
       <img src="/icon/add.png" alt="add" />
     </div>
 
     <!-- room feed -->
     <div class="main">
-      <div class="box" id="box">
+      <div class="box" id="feedBox">
         <h1 id="addRoomBtn">Available Rooms</h1>
         <div class="searchBox">
           <input
@@ -60,21 +60,70 @@
           />
         </div>
       </div>
+
+      <div class="addBox box" id="addBox">
+        <div class="head">
+          <i class="fa-solid fa-arrow-left fa-2x iconLink back" id="back"></i>
+          <h1>Add New Room</h1>
+        </div>
+        <div class="headMenu">
+          <div class="joinBtn active btn">Join</div>
+          <div class="createBtn unactive btn">Create</div>
+        </div>
+        <div class="addBoxContent">
+          <div class="join active" id="join">
+            <div class="joinBox">
+              <input type="text" id="joinRoomInput" placeholder="Enter Room ID" />
+              <button class="btn btn-primary" id="joinRoomBtn">Join Room</button>
+            </div>
+          </div>
+          <div class="create unactive" id="create">
+            <form id="createForm">
+              <label for="name">Room Name:</label>
+              <input type="text" id="name" name="name" required />
+              <br />
+              <label for="organization">Organization:</label>
+              <input
+                type="text"
+                id="organization"
+                name="organization"
+                required
+              />
+              <br />
+              <h2>Custom Fields:</h2>
+              <div id="customFieldsContainer"></div>
+              <button type="button" onclick="addCustomField()">
+                Add Custom Field
+              </button>
+              <br /><br />
+              <button type="submit">Create Room</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
       const searchInput = document.getElementById("searchInput");
       const myAlert = document.getElementById("alert");
+      const select = document.getElementById("select");
+      const addBtn = document.getElementById("addBtn");
+      const feedBox = document.getElementById("feedBox");
+      const addBox = document.getElementById("addBox");
+      const backBtn = document.getElementById("back");
+      const btn = document.querySelectorAll(".btn");
+      const join = document.getElementById("join");
+      const create = document.getElementById("create");
+      const createForm = document.getElementById("createForm");
 
-      // show alert
-      const showAlert = (text, type) => {
-        myAlert.classList.add("show", `alert-${type}`);
-        myAlert.innerText = text;
-        setTimeout(() => {
-          myAlert.classList.remove("show", `alert-${type}`);
-          myAlert.innerText = "";
-        }, 3000);
-      };
+      //join room logic
+      const joinRoomBtn = document.getElementById("joinRoomBtn");
+      const joinRoomInput = document.getElementById("joinRoomInput");
+      joinRoomBtn.addEventListener("click", () => {
+        event.preventDefault();
+        const roomId = joinRoomInput.value;
+        window.location.href = `room/${roomId}`;
+      });
 
       // fetch & display room list
       const fetchAndDisplayRoomList = async (filter) => {
@@ -86,11 +135,11 @@
         });
         const rooms = await response.json();
         emptyImg.style.display = "none";
-        feed.innerHTML = `<img src="/icon/emptyList.png" alt="" class="emptyImg" id="emptyImg" style="display: none;">`
+        feed.innerHTML = `<img src="/icon/emptyList.png" alt="" class="emptyImg" id="emptyImg" style="display: none;">`;
         searchInput.value = "";
 
         rooms.forEach((item) => {
-          if(item.type !== filter && filter !== "all"){
+          if (item.type !== filter && filter !== "all") {
             return;
           }
 
@@ -110,6 +159,113 @@
       let filter = "all";
       fetchAndDisplayRoomList(filter);
 
+      // create form
+
+      const name = document.getElementById("name");
+      const organization = document.getElementById("organization");
+      const container = document.getElementById("customFieldsContainer");
+
+      createForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const allFieldName = container.querySelectorAll(".fieldName");
+        const allFieldType = container.querySelectorAll(".fieldType");
+
+        let data = {
+          name: name.value,
+          organization: organization.value,
+          customFields: [],
+        };
+
+        allFieldName.forEach((input, index) => {
+          let fieldData = {
+            fieldName: input.value,
+            fieldType: allFieldType[index].value,
+          };
+          data.customFields.push(fieldData);
+        });
+
+        const response = await fetch(`/create-room`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const feedback = await response.json();
+        if (feedback.success) {
+          showAlert("Room Created Successfully", "success");
+          `<img src="/icon/emptyList.png" alt="" class="emptyImg" id="emptyImg" style="display: none;">`;
+          fetchAndDisplayRoomList(filter);
+          backBtn.click();
+          createForm.reset();
+        }
+      });
+
+      function addCustomField() {
+        const container = document.getElementById("customFieldsContainer");
+        const fieldNumber = container.children.length + 1;
+        const newField = document.createElement("div");
+        newField.classList.add("custom-field");
+        newField.innerHTML = `
+                <label for="fieldName${fieldNumber}">Field Name:</label>
+                <input type="text" id="fieldName${fieldNumber}" class="fieldName" name="fieldName${fieldNumber}" required>
+                <label for="fieldType${fieldNumber}">Field Type:</label>
+                <select id="fieldType${fieldNumber}" class="fieldType" name="fieldType${fieldNumber}" required>
+                    <option value="">Select Type</option>
+                    <option value="text">Text</option>
+                    <option value="number">Number</option>
+                </select>
+                <button type="button" onclick="removeCustomField(this)">Remove</button>
+            `;
+        container.appendChild(newField);
+      }
+
+      function removeCustomField(button) {
+        const customField = button.parentNode;
+        customField.remove();
+      }
+
+      // addBtn Event Listner
+      addBtn.addEventListener("click", () => {
+        feedBox.style.display = "none";
+        addBox.style.display = "block";
+        addBtn.style.display = "none";
+      });
+
+      // backBtn Logic
+      backBtn.addEventListener("click", () => {
+        feedBox.style.display = "block";
+        addBox.style.display = "none";
+        addBtn.style.display = "block";
+      });
+
+      //join create switch
+      btn.forEach((Element) => {
+        Element.addEventListener("click", () => {
+          const unactive = document.querySelectorAll(".unactive");
+          const active = document.querySelectorAll(".active");
+          active.forEach((elemnts) => {
+            elemnts.classList.remove("active");
+            elemnts.classList.add("unactive");
+          });
+          unactive.forEach((elemnts) => {
+            elemnts.classList.add("active");
+            elemnts.classList.remove("unactive");
+          });
+        });
+      });
+
+      // show alert
+      const showAlert = (text, type) => {
+        myAlert.classList.add("show", `alert-${type}`);
+        myAlert.innerText = text;
+        setTimeout(() => {
+          myAlert.classList.remove("show", `alert-${type}`);
+          myAlert.innerText = "";
+        }, 3000);
+      };
+
       // search function
       searchInput.addEventListener("keyup", () => {
         const searchText = searchInput.value.toLowerCase().trim();
@@ -117,7 +273,9 @@
         emptyImg.style.display = "none";
         let flag = true;
         Array.from(items).forEach((item) => {
-          const text = item.children[0].children[1].innerText.toLowerCase().trim();
+          const text = item.children[0].children[1].innerText
+            .toLowerCase()
+            .trim();
           if (text.includes(searchText)) {
             flag = false;
             item.style.display = "flex";
@@ -131,8 +289,6 @@
       });
 
       // filter funciton
-      const select = document.getElementById("select");
-
       select.addEventListener("click", function (e) {
         let index = Array.prototype.indexOf.call(select.children, e.target);
         filter = select.value;
