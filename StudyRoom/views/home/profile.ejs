@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('links') %>
+    <link rel="stylesheet" href="/styles/profile.css" />
+    <title>StudyRoom - Profile</title>
+  </head>
+  <body>
+    <%- include('navbar') %>
+    <div class="spinner-container" id="spinner-container">
+      <div class="spinner"></div>
+    </div>
+      
+    <div class="alert" id="alert" role="alert"></div>
+    <div class="main">
+      <div class="img">
+        <img src="<%= user.profileImg %>" alt="" class="myImg" id="showImg" />
+        <div class="imgLink" id="imglink">
+          <input
+            type="file"
+            id="fileInput"
+            accept="image/png"
+            name="image"
+            style="display: none"
+          />
+          <i
+            class="fa-solid fa-arrow-up-from-bracket fa-2x iconLink"
+            id="upload"
+          ></i>
+          <i class="fa-solid fa-trash fa-2x iconLink" id="delete"></i>
+        </div>
+      </div>
+      <div class="details" id="details">
+        <div class="head">
+          <h1>Personal Details</h1>
+          <i class="fa-solid fa-pen-to-square icon fa-2x iconLink" id="updateProfileBtn"></i>
+        </div>
+        <table>
+          <tr>
+            <th>Username</th>
+            <td><div class="name"><%= user.username %></div></td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td><div class="email"><%= user.email %></div></td>
+          </tr>
+          <tr>
+            <th>Name</th>
+            <td><div class="name" id="nameDetail"><%= user.name %></div></td>
+          </tr>
+          <tr>
+            <th>Mobile</th>
+            <td><div class="mobile" id="mobileDetail"><%= user.mobile %></div></td>
+          </tr>
+          <tr>
+            <th>Gender</th>
+            <td><div class="gender" id="genderDetail"><%= user.gender %></div></td>
+          </tr>
+          <tr>
+            <td><a href="/logout" class="btn btn-danger button">Logout</a></td>
+            <td>
+              <button class="btn btn-primary button" id="changePassBtn">
+                Change Password
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="changePass details" id="changePass">
+        <div class="head headBack">
+          <i class="fa-solid fa-arrow-left fa-2x iconLink back" id="back1"></i>
+          <h1>Change Password</h1>
+        </div>
+        <table>
+          <form id="changePassForm">
+            <tr>
+              <td class="pass-error" id="pass-error"></td>
+            </tr>
+            <tr>
+              <th>Enter New Password</th>
+              <td><input type="password" id="passInput1" required /></td>
+            </tr>
+            <tr>
+              <th>Re-Enter New Password</th>
+              <td><input type="password" id="passInput2" required /></td>
+            </tr>
+            <tr>
+              <th>
+                <button class="btn btn-primary button" type="submit">update</button>
+              </th>
+            </tr>
+          </form>
+        </table>
+      </div>
+      <div class="updateProfile details" id="updateProfile">
+        <div class="head headBack">
+          <i class="fa-solid fa-arrow-left fa-2x iconLink back" id="back2"></i>
+          <h1>Edit Personal Details</h1>
+        </div>
+        <table>
+          <tr>
+            <th>Username</th>
+            <td><div class="name"><%= user.username %></div></td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td><div class="email"><%= user.email %></div></td>
+          </tr>
+          <tr>
+            <th>Name</th>
+            <td><div class="name"><input type="text" value="<%= user.name %>" required id="name"></div></td>
+          </tr>
+          <tr>
+            <th>Mobile</th>
+            <td><div class="mobile"><input type="number" value="<%= user.mobile %>" required id="mobile"></div></td>
+          </tr>
+          <tr>
+            <th>Gender</th>
+            <td><div class="gender"><select id="gender" name="gender" required>
+              <option value="Male" id="male">Male</option>
+              <option value="Female" id="female">Female</option>
+              <option value="Other" id="other">Other</option>
+            </select></div></td>
+          </tr>
+          <tr>
+            <td><button class="btn btn-primary button" id="saveBtn">save</button></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <script>
+      const spinner = document.getElementById('spinner-container');
+
+      const uploadBtn = document.getElementById("upload");
+      const fileInput = document.getElementById("fileInput");
+      const showImg = document.getElementById("showImg");
+      const myAlert = document.getElementById("alert");
+      const navImage = document.getElementById("navImage");
+      const deleteBtn = document.getElementById("delete");
+      const changePassBtn = document.getElementById("changePassBtn");
+      const details = document.getElementById("details");
+      const changePass = document.getElementById("changePass");
+      const backBtn = document.querySelectorAll(".back");
+      const backBtn1 = document.getElementById("back1")
+      const backBtn2 = document.getElementById("back2")
+      const changePassForm = document.getElementById("changePassForm");
+      const passInput1 = document.getElementById("passInput1");
+      const passInput2 = document.getElementById("passInput2");
+      const passError = document.getElementById("pass-error");
+
+      const updateProfileBtn = document.getElementById("updateProfileBtn");
+      const updateProfile = document.getElementById("updateProfile");
+      const nameInput = document.getElementById("name");
+      const mobileInput = document.getElementById("mobile");
+      const genderInput = document.getElementById("gender");
+      const saveBtn = document.getElementById("saveBtn");
+
+      const showAlert = (text, type) => {
+        myAlert.classList.add("show", `alert-${type}`);
+        myAlert.innerText = text;
+        setTimeout(() => {
+            myAlert.classList.remove("show", `alert-${type}`);
+          }, 3000);
+      }
+
+      const imgpath = "<%= user.profileImg %>";
+      if (imgpath === "/icon/default-user.png") {
+        deleteBtn.classList.add("disable");
+      }
+
+      const gender = "<%= user.gender %>";
+      document.getElementById("gender").value = "<%= user.gender %>";
+
+      uploadBtn.addEventListener("click", () => {
+        fileInput.click();
+      });
+
+      fileInput.onchange = async (event) => {
+        spinner.style.display = "block";
+        const file = event.target.files[0];
+
+        if (file && file.type === "image/png") {
+          const formData = new FormData();
+          formData.append("image", file);
+
+          const response = await fetch("/upload-image", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+          const path = data.path;
+          showImg.setAttribute("src", path);
+          navImage.setAttribute("src", path);
+          showAlert("Profile Image Upadated Successfully.", "success");
+          spinner.style.display = "none";
+          deleteBtn.classList.remove("disable");
+        } else {
+          alert("Please select a PNG image.");
+        }
+      };
+
+      deleteBtn.addEventListener("click", async () => {
+        spinner.style.display = "block";
+        const response = await fetch("/delete-image", {
+          method: "DELETE",
+        });
+        const data = await response.json();
+        const path = data.path;
+        showImg.setAttribute("src", path);
+        navImage.setAttribute("src", path);
+        showAlert("Profile Image Deleted Successfully.", "danger");
+        deleteBtn.classList.add("disable");
+        spinner.style.display = "none";
+      });
+
+      changePassBtn.addEventListener("click", () => {
+        details.style.display = "none";
+        changePass.style.display = "block";
+        passError.style.display = "none";
+      });
+
+      backBtn.forEach(Element => {
+        Element.addEventListener("click", ()=>{
+        details.style.display = "block";
+        updateProfile.style.display = "none";
+        changePass.style.display = "none";
+        })
+      })
+
+      changePassForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        spinner.style.display = "block";
+        if (passInput1.value !== passInput2.value) {
+          passError.innerText = "Both password are not same";
+          passError.style.display = "block";
+          spinner.style.display = "none";
+
+          return;
+        }
+        if (passInput1.value.length < 6) {
+          passError.innerText = "password shoud be grether than 6";
+          passError.style.display = "block";
+          spinner.style.display = "none";
+          return;
+        }
+        let formData = {
+          password: passInput1.value,
+        };
+        const response = await fetch(`/update-password`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        if(data.success){
+          showAlert("password changed sucessfully.", "success");
+          backBtn1.click();
+          changePassForm.reset();
+        }
+        spinner.style.display = "none";
+      });
+
+      updateProfileBtn.addEventListener("click",()=> {
+        details.style.display = "none";
+        updateProfile.style.display = "block";
+      });
+
+
+      let formData = {};
+      saveBtn.addEventListener("click", async ()=>{
+        spinner.style.display = "block";
+        if(mobileInput.value.length !== 10){
+          showAlert("mobile number should be 10 digit", "danger");
+          spinner.style.display = "none";
+          return;
+        }
+        formData = {
+          name: nameInput.value,
+          mobile: mobileInput.value,
+          gender: genderInput.value,
+        };
+        const response = await fetch("/update-profile", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        if (data.success) {
+          showAlert("Personal Details is updated successfully", "success");
+          backBtn2.click();
+          document.getElementById("nameDetail").innerText = nameInput.value;
+          document.getElementById("mobileDetail").innerText = mobileInput.value;
+          document.getElementById("genderDetail").innerText = genderInput.value;
+
+        } else {
+          showAlert("server error", "danger");
+        }
+        spinner.style.display = "none";
+      })
+    </script>
+  </body>
+</html>

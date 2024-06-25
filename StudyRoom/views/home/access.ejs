@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('links') %>
+    <link rel="stylesheet" href="/styles/join.css" />
+    <title>StudyRoom - Get Access</title>
+  </head>
+  <body>
+    <%- include('navbar') %>
+    <div class="main">
+      <div>
+        <p><img src="<%= room.img %>" alt="" /></p>
+        <p><%= room.name %></p>
+        <p><%= room.organization %></p>
+      </div>
+      <form id="accessForm">
+        <% room.customFields.forEach(function (form) { %>
+        <label for="<%= form.fieldName %>"><%= form.fieldName %>:</label>
+        <input
+          type="<%= form.fieldType %>"
+          id="<%= form.fieldName %>"
+          name="<%= form.fieldName %>"
+          required
+        />
+        <% }); %>
+        <button type="submit" class="btn btn-primary">submit</button>
+      </form>
+    </div>
+    <script>
+      const accessForm = document.getElementById("accessForm");
+      const roomId = "<%= room.roomId %>";
+
+      accessForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const response = await fetch(`/access/${roomId}`, {
+          method: "POST",
+        });
+      });
+    </script>
+  </body>
+</html>

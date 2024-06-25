@@ -1,0 +1,14 @@
+<nav>
+  <div class="logo">
+    <img src="/icon/logo.png" alt="Logo" />
+    <span><a href="/">Study Room</a></span>
+  </div>
+  <div class="links">
+      <a href="/join" <% if(active === "join"){ %> class="active" <% } %>>Join Room</a>
+      <a href="/create" <% if(active === "create"){ %> class="active" <% } %>>Create Room</a>
+      <a href="/about" <% if(active === "about"){ %> class="active" <% } %>>About us</a>
+  </div>
+  <div>
+    <a href="/profile/<%= user.username %>"> <img class="profile" id="navImage" src="<%= user.profileImg %>" alt="profile"> </a>
+  </div>
+ </nav>

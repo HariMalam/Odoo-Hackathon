@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <div class="combine">
+        <div class="logo">
+            <img src="logo.png" alt="logo" />
+            <h1>StudyRoom</h1>
+        </div>
+        <div class="container">
+            <h2>Sign Up</h2>
+            <form action="/login/signup" method="post">
+
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="text" name="username" placeholder="Username" required>
+
+
+
+                <div class="error" style="color: red; padding-bottom: 10px;">Username is already Exist</div>
+
+                <input type="number" name="mobile" placeholder="Mobile Number" required>
+
+                <div class="error" style="color: red; padding-bottom: 10px; ">Mobile Number is already Exist</div>
+
+
+                <div class="error" style="color: red; padding-bottom: 10px;"></div>
+
+                <input type="email" name="email" placeholder="Email" required>
+
+                <div class="error" style="color: red; padding-bottom: 10px;">Email is already Exist</div>
+
+                <input type="password" name="password" placeholder="Enter Password" required>
+
+                <div class="error" style="color: red; padding-bottom: 10px;">
+
+                </div>
+
+
+                <div class="gender"> <label for="">Gender</label></div>
+                <div class="g1">
+                    <label for="male">
+                        <input id="male" type="radio" name="gender" placeholder="Male" value="male" required>Male
+                    </label>
+                    <label for="female">
+                        <input id="female" type="radio" name="gender" placeholder="female" id="female" value="female"
+                            required>Female
+                    </label>
+                </div>
+
+
+                <input type="submit" value="Sign Up">
+
+                <hr>
+                <a class="create" href="/auth/login">Already have an account ?</a>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

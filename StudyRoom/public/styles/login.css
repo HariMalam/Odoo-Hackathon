@@ -1,0 +1,111 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+
+body{
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #f0f2f5;
+  width: 100vw;
+  height: 100vh;
+}
+
+.main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.logo{
+  display: flex;
+  align-items: center;
+}
+
+.logo img{
+  height: 60px;
+  padding: 10px;
+}
+
+.logo h1{
+  font-size: 60px;
+  color: blue;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 700px;
+}
+
+.login-container {
+  background-color: white;
+  padding: 40px;
+  margin-top: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  font-size: 40px;
+}
+
+.login-container input[type="text"],
+.login-container input[type="number"],
+.login-container input[type="email"],
+.login-container input[type="date"],
+.login-container input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 25px;
+}
+
+.login-container input[type="submit"] {
+  width: 100%;
+  font-size: 20px;
+  background-color: #000000;
+  font-size: 25px;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.login-container input[type="submit"]:hover {
+  color: rgb(255, 255, 255);
+  background-color: #303030;
+}
+
+.Create {
+  color: rgba(67, 64, 64, 0.639);
+  font-size: small;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.slink {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.Create:hover {
+  color: rgb(67, 64, 64);
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}

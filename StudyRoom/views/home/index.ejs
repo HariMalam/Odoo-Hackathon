@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('links') %>
+    <link rel="stylesheet" href="/styles/home.css" />
+    <title>StudyRoom</title>
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav>
+      <div class="logo">
+        <img src="/icon/logo.png" alt="Logo" />
+        <span><a href="/">Study Room</a></span>
+      </div>
+      <div>
+        <a href="/profile/<%= user.username %>">
+          <img
+            class="profile"
+            id="navImage"
+            src="<%= user.profileImg%>"
+            alt="profile"
+          />
+        </a>
+      </div>
+    </nav>
+
+    <!-- alert -->
+    <div class="alert" id="alert" role="alert"></div>
+
+    <!-- add new -->
+    <div class="addBox" title="Add New Room">
+      <img src="/icon/add.png" alt="add" />
+    </div>
+
+    <!-- room feed -->
+    <div class="main">
+      <div class="box" id="box">
+        <h1 id="addRoomBtn">Available Rooms</h1>
+        <div class="searchBox">
+          <input
+            type="text"
+            placeholder="search"
+            class="search"
+            id="searchInput"
+          />
+          <select id="select" name="select" class="select">
+            <option value="all">All Rooms</option>
+            <option value="admin">Admin</option>
+            <option value="member">Memeber</option>
+          </select>
+        </div>
+        <div class="feed" id="feed">
+          <img
+            src="/icon/emptyList.png"
+            alt=""
+            class="emptyImg"
+            id="emptyImg"
+          />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const searchInput = document.getElementById("searchInput");
+      const myAlert = document.getElementById("alert");
+
+      // show alert
+      const showAlert = (text, type) => {
+        myAlert.classList.add("show", `alert-${type}`);
+        myAlert.innerText = text;
+        setTimeout(() => {
+          myAlert.classList.remove("show", `alert-${type}`);
+          myAlert.innerText = "";
+        }, 3000);
+      };
+
+      // fetch & display room list
+      const fetchAndDisplayRoomList = async (filter) => {
+        const response = await fetch("/available-rooms", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const rooms = await response.json();
+        emptyImg.style.display = "none";
+        feed.innerHTML = `<img src="/icon/emptyList.png" alt="" class="emptyImg" id="emptyImg" style="display: none;">`
+        searchInput.value = "";
+
+        rooms.forEach((item) => {
+          if(item.type !== filter && filter !== "all"){
+            return;
+          }
+
+          const div = document.createElement("div");
+          div.className = "item";
+          div.innerHTML = `<span class="logo-name"><img src="${item.img}" alt="" class="room-img" /> <div class="room-name">${item.name}</div> <div class="type">${item.type}</div></span><a class="btn btn-primary joinBtn" href="/room/${item.roomId}">Join</a>`;
+          feed.appendChild(div);
+        });
+
+        if (
+          feed.innerHTML.trim() ===
+          `<img src="/icon/emptyList.png" alt="" class="emptyImg" id="emptyImg" style="display: none;">`
+        ) {
+          emptyImg.style.display = "block";
+        }
+      };
+      let filter = "all";
+      fetchAndDisplayRoomList(filter);
+
+      // search function
+      searchInput.addEventListener("keyup", () => {
+        const searchText = searchInput.value.toLowerCase().trim();
+        const items = feed.getElementsByClassName("item");
+        emptyImg.style.display = "none";
+        let flag = true;
+        Array.from(items).forEach((item) => {
+          const text = item.children[0].children[1].innerText.toLowerCase().trim();
+          if (text.includes(searchText)) {
+            flag = false;
+            item.style.display = "flex";
+          } else {
+            item.style.display = "none";
+          }
+        });
+        if (flag) {
+          emptyImg.style.display = "block";
+        }
+      });
+
+      // filter funciton
+      const select = document.getElementById("select");
+
+      select.addEventListener("click", function (e) {
+        let index = Array.prototype.indexOf.call(select.children, e.target);
+        filter = select.value;
+        fetchAndDisplayRoomList(filter);
+      });
+    </script>
+  </body>
+</html>

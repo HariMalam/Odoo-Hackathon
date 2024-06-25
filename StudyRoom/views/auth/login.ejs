@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/icon/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/icon/favicon.ico" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/styles/login.css" />
+    <title>StudyRoom - log in or sign up</title>
+  </head>
+  <body>
+    <div class="main">
+      <div class="logo">
+        <img src="/icon/logo.png" alt="logo" />
+        <h1>StudyRoom</h1>
+      </div>
+
+      <div class="login-container">
+        <h2><i class="fa-solid fa-lock"></i> Login</h2>
+        <% if(invalid) {%>
+        <div style="color: red; padding-bottom: 10px">
+          Invalid Username or Password !!
+        </div>
+        <% } %> <% if(success) {%>
+        <div style="color: green; padding-bottom: 10px">
+          Your account is created successfully !!!
+        </div>
+        <% } %>
+        <form action="/auth/login" method="post">
+          <input type="text" name="username" placeholder="Username" required />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <input type="submit" value="Login" />
+          <div class="slink">
+            <a class="Create" href="/auth/signup">Create Account ?</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
